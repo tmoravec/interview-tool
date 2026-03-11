@@ -158,6 +158,115 @@ function clearOutput() {
 }
 
 // ---------------------------------------------------------------------------
+// Drag-and-drop zones
+// ---------------------------------------------------------------------------
+
+/**
+ * Initialises a single drop-zone element.
+ * The zone wraps a hidden <input type="file"> and shows the selected filename.
+ * @param {HTMLElement} zone
+ */
+function initDropZone(zone) {
+  const input = zone.querySelector('input[type="file"]');
+  const filenameEl = zone.querySelector('.drop-zone__filename');
+  const clearBtn = zone.querySelector('.drop-zone__clear');
+
+  function setFile(file) {
+    // Use DataTransfer to programmatically assign a File to the input
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    input.files = dt.files;
+    filenameEl.textContent = file.name;
+    zone.classList.add('drop-zone--has-file');
+  }
+
+  function clearFile() {
+    input.value = '';
+    filenameEl.textContent = '';
+    zone.classList.remove('drop-zone--has-file');
+  }
+
+  // Reflect clicks anywhere on the zone to the hidden input
+  // (The input covers the zone via position:absolute, so native click works
+  //  automatically; we only need to prevent the clear-button from also
+  //  triggering the file picker.)
+  clearBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); // don't bubble to the zone / input overlay
+    clearFile();
+  });
+
+  // Reflect input change (user picked a file via the native dialog)
+  input.addEventListener('change', () => {
+    if (input.files && input.files.length > 0) {
+      filenameEl.textContent = input.files[0].name;
+      zone.classList.add('drop-zone--has-file');
+    } else {
+      clearFile();
+    }
+  });
+
+  // Drag-over visual feedback
+  zone.addEventListener('dragenter', (e) => {
+    e.preventDefault();
+    zone.classList.add('drop-zone--hover');
+  });
+  zone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    zone.classList.add('drop-zone--hover');
+  });
+  zone.addEventListener('dragleave', (e) => {
+    // Only remove hover when leaving the zone itself (not a child)
+    if (!zone.contains(e.relatedTarget)) {
+      zone.classList.remove('drop-zone--hover');
+    }
+  });
+
+  // Handle the actual drop
+  zone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    zone.classList.remove('drop-zone--hover');
+
+    const files = e.dataTransfer?.files;
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
+
+    // Validate MIME / extension against the input's accept attribute
+    const accept = input.getAttribute('accept') || '';
+    if (accept && !isAccepted(file, accept)) {
+      showError(`"${file.name}" is not an accepted file type for this field (${accept}).`);
+      return;
+    }
+
+    setFile(file);
+  });
+}
+
+/**
+ * Returns true if `file` matches any entry in a comma-separated `accept` string.
+ * Entries can be MIME types (e.g. "application/pdf") or extensions (e.g. ".pdf").
+ * @param {File} file
+ * @param {string} accept
+ */
+function isAccepted(file, accept) {
+  const entries = accept.split(',').map((s) => s.trim().toLowerCase());
+  const ext = '.' + file.name.split('.').pop().toLowerCase();
+  const mime = file.type.toLowerCase();
+  return entries.some((entry) => {
+    if (entry.startsWith('.')) return ext === entry;
+    if (entry.endsWith('/*')) return mime.startsWith(entry.slice(0, -1));
+    return mime === entry;
+  });
+}
+
+/**
+ * Initialises all drop zones in the document.
+ */
+function initAllDropZones() {
+  document.querySelectorAll('.drop-zone').forEach(initDropZone);
+}
+
+// ---------------------------------------------------------------------------
 // Tab switching
 // ---------------------------------------------------------------------------
 
@@ -167,13 +276,20 @@ function clearForm(mode) {
   for (const field of fields) {
     const textEl = el(`${prefix}-${field}-text`);
     const fileEl = el(`${prefix}-${field}-file`);
+    const zone  = el(`${prefix}-${field}-dropzone`);
     if (textEl) textEl.value = '';
     if (fileEl) fileEl.value = '';
+    if (zone) {
+      zone.classList.remove('drop-zone--has-file', 'drop-zone--hover');
+      const filenameEl = zone.querySelector('.drop-zone__filename');
+      if (filenameEl) filenameEl.textContent = '';
+    }
   }
 }
 
 // Listen for Bootstrap tab-show events
 document.addEventListener('DOMContentLoaded', () => {
+  initAllDropZones();
   const tabEls = document.querySelectorAll('#mode-tabs button[data-bs-toggle="tab"]');
   tabEls.forEach((tabEl) => {
     tabEl.addEventListener('shown.bs.tab', (event) => {

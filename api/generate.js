@@ -106,6 +106,7 @@ export default async function handler(req, res) {
     ],
   };
 
+  console.log(`[OpenRouter] Sending request. Model: ${MODEL}, messages: ${requestBody.messages.length}, max_tokens: ${MAX_TOKENS}`);
   debugLog('OpenRouter request', requestBody);
 
   // Call OpenRouter
@@ -124,6 +125,7 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       const errorText = await response.text().catch(() => '');
+      console.error(`[OpenRouter] HTTP ${response.status} error. Model: ${MODEL}. Body: ${errorText}`);
       debugLog('OpenRouter error response', { status: response.status, body: errorText });
 
       if (response.status === 401) {

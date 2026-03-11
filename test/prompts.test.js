@@ -88,40 +88,59 @@ describe('getPrompt — candidate mode, all text inputs', () => {
 });
 
 describe('getPrompt — file inputs (Base64 objects)', () => {
-  it('includes an image_url part for a file-based CV', () => {
+  it('includes a file part for a PDF-based CV', () => {
     const fileInput = { mimeType: 'application/pdf', data: 'AAABBBCCC' };
     const result = getPrompt('interviewer', {
       cv: fileInput,
       jobDescription: 'Some job',
     });
-    const imageUrlParts = result.userMessageParts.filter(p => p.type === 'image_url');
-    assert.ok(imageUrlParts.length > 0, 'should have at least one image_url part for file input');
-    const url = imageUrlParts[0].image_url.url;
+    const fileParts = result.userMessageParts.filter(p => p.type === 'file');
+    assert.ok(fileParts.length > 0, 'should have at least one file part for PDF input');
+    const url = fileParts[0].file.url;
     assert.ok(url.startsWith('data:application/pdf;base64,'), 'URL should be a data URI with correct mime type');
     assert.ok(url.includes('AAABBBCCC'), 'URL should include the base64 data');
   });
 
-  it('includes an image_url part for a file-based job description', () => {
-    const fileInput = { mimeType: 'text/plain', data: 'DDDEEEFFF' };
+  it('decodes a text/plain file-based job description into a text part', () => {
+    const originalText = 'DDDEEEFFF plain text content';
+    const fileInput = { mimeType: 'text/plain', data: Buffer.from(originalText).toString('base64') };
     const result = getPrompt('interviewer', {
       cv: 'Some CV text',
       jobDescription: fileInput,
     });
+    // Should produce a text part — no file or image_url parts
+    const fileParts = result.userMessageParts.filter(p => p.type === 'file');
     const imageUrlParts = result.userMessageParts.filter(p => p.type === 'image_url');
-    assert.ok(imageUrlParts.length > 0, 'should have at least one image_url part for file JD');
-    const url = imageUrlParts[0].image_url.url;
-    assert.ok(url.includes('DDDEEEFFF'), 'URL should include the base64 data');
+    assert.strictEqual(fileParts.length, 0, 'text/plain should not produce a file part');
+    assert.strictEqual(imageUrlParts.length, 0, 'text/plain should not produce an image_url part');
+    const combined = result.userMessageParts.map(p => p.text || '').join(' ');
+    assert.ok(combined.includes(originalText), 'decoded text should appear in a text part');
   });
 
-  it('includes an image_url part for a file-based company context', () => {
+  it('decodes an application/octet-stream file into a text part', () => {
+    const originalText = 'octet stream content GHI999';
+    const fileInput = { mimeType: 'application/octet-stream', data: Buffer.from(originalText).toString('base64') };
+    const result = getPrompt('interviewer', {
+      cv: 'Some CV text',
+      jobDescription: fileInput,
+    });
+    const fileParts = result.userMessageParts.filter(p => p.type === 'file');
+    const imageUrlParts = result.userMessageParts.filter(p => p.type === 'image_url');
+    assert.strictEqual(fileParts.length, 0, 'octet-stream should not produce a file part');
+    assert.strictEqual(imageUrlParts.length, 0, 'octet-stream should not produce an image_url part');
+    const combined = result.userMessageParts.map(p => p.text || '').join(' ');
+    assert.ok(combined.includes(originalText), 'decoded text should appear in a text part');
+  });
+
+  it('includes a file part for a PDF-based company context', () => {
     const fileInput = { mimeType: 'application/pdf', data: 'GGGHHH' };
     const result = getPrompt('candidate', {
       cv: 'CV text',
       jobDescription: 'JD text',
       companyContext: fileInput,
     });
-    const imageUrlParts = result.userMessageParts.filter(p => p.type === 'image_url');
-    assert.ok(imageUrlParts.length > 0, 'should have image_url part for file company context');
+    const fileParts = result.userMessageParts.filter(p => p.type === 'file');
+    assert.ok(fileParts.length > 0, 'should have a file part for PDF company context');
   });
 });
 

@@ -73,6 +73,80 @@
       width: 1rem;
       height: 1rem;
     }
+
+    /* ------------------------------------------------------------------ */
+    /* Drag-and-drop zone                                                   */
+    /* ------------------------------------------------------------------ */
+    .drop-zone {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      min-height: 72px;
+      padding: 1rem 1.25rem;
+      border: 2px dashed #ced4da;
+      border-radius: 0.375rem;
+      background-color: #fff;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+      text-align: center;
+    }
+    .drop-zone:hover,
+    .drop-zone.drop-zone--hover {
+      border-color: #0d6efd;
+      background-color: #f0f6ff;
+    }
+    .drop-zone.drop-zone--has-file {
+      border-color: #198754;
+      background-color: #f0fff4;
+    }
+    .drop-zone input[type="file"] {
+      /* Hidden but still reachable by label / programmatic click */
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .drop-zone__icon {
+      font-size: 1.5rem;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .drop-zone__label {
+      font-size: 0.85rem;
+      color: #495057;
+      pointer-events: none;
+    }
+    .drop-zone__filename {
+      font-size: 0.8rem;
+      color: #198754;
+      font-weight: 500;
+      pointer-events: none;
+      word-break: break-all;
+    }
+    .drop-zone__clear {
+      position: absolute;
+      top: 0.35rem;
+      right: 0.5rem;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      line-height: 1;
+      color: #6c757d;
+      cursor: pointer;
+      padding: 0;
+      display: none;
+    }
+    .drop-zone.drop-zone--has-file .drop-zone__clear {
+      display: block;
+    }
+    .drop-zone.drop-zone--has-file .drop-zone__prompt {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -133,12 +207,13 @@
               rows="5"
               placeholder="Paste the candidate's CV here…"
             ></textarea>
-            <input
-              type="file"
-              class="form-control"
-              id="interviewer-cv-file"
-              accept=".pdf,.txt,.md"
-            />
+            <div class="drop-zone" id="interviewer-cv-dropzone">
+              <input type="file" id="interviewer-cv-file" accept=".pdf,.txt,.md" />
+              <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
+              <span class="drop-zone__icon drop-zone__prompt">📄</span>
+              <span class="drop-zone__label drop-zone__prompt">Drop file here or <u>click to browse</u></span>
+              <span class="drop-zone__filename"></span>
+            </div>
             <div class="field-note mt-1">File takes precedence over pasted text when both are provided. Accepted: PDF, TXT, MD.</div>
           </div>
 
@@ -151,12 +226,13 @@
               rows="5"
               placeholder="Paste the job description here…"
             ></textarea>
-            <input
-              type="file"
-              class="form-control"
-              id="interviewer-jd-file"
-              accept=".pdf,.txt,.md"
-            />
+            <div class="drop-zone" id="interviewer-jd-dropzone">
+              <input type="file" id="interviewer-jd-file" accept=".pdf,.txt,.md" />
+              <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
+              <span class="drop-zone__icon drop-zone__prompt">📄</span>
+              <span class="drop-zone__label drop-zone__prompt">Drop file here or <u>click to browse</u></span>
+              <span class="drop-zone__filename"></span>
+            </div>
             <div class="field-note mt-1">File takes precedence over pasted text when both are provided. Accepted: PDF, TXT, MD.</div>
           </div>
 
@@ -169,12 +245,13 @@
               rows="3"
               placeholder="Paste company context, culture notes, or strategy here…"
             ></textarea>
-            <input
-              type="file"
-              class="form-control"
-              id="interviewer-context-file"
-              accept=".pdf,.txt,.md"
-            />
+            <div class="drop-zone" id="interviewer-context-dropzone">
+              <input type="file" id="interviewer-context-file" accept=".pdf,.txt,.md" />
+              <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
+              <span class="drop-zone__icon drop-zone__prompt">📄</span>
+              <span class="drop-zone__label drop-zone__prompt">Drop file here or <u>click to browse</u></span>
+              <span class="drop-zone__filename"></span>
+            </div>
             <div class="field-note mt-1">File takes precedence over pasted text when both are provided. Accepted: PDF, TXT, MD.</div>
           </div>
 
@@ -187,12 +264,13 @@
               rows="3"
               placeholder="Paste a custom Markdown template here…"
             ></textarea>
-            <input
-              type="file"
-              class="form-control"
-              id="interviewer-template-file"
-              accept=".md,.txt"
-            />
+            <div class="drop-zone" id="interviewer-template-dropzone">
+              <input type="file" id="interviewer-template-file" accept=".md,.txt" />
+              <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
+              <span class="drop-zone__icon drop-zone__prompt">📄</span>
+              <span class="drop-zone__label drop-zone__prompt">Drop file here or <u>click to browse</u></span>
+              <span class="drop-zone__filename"></span>
+            </div>
             <div class="field-note mt-1">Replaces the built-in default template. File takes precedence. Accepted: MD, TXT.</div>
           </div>
 
@@ -219,12 +297,13 @@
               rows="5"
               placeholder="Paste your CV here…"
             ></textarea>
-            <input
-              type="file"
-              class="form-control"
-              id="candidate-cv-file"
-              accept=".pdf,.txt,.md"
-            />
+            <div class="drop-zone" id="candidate-cv-dropzone">
+              <input type="file" id="candidate-cv-file" accept=".pdf,.txt,.md" />
+              <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
+              <span class="drop-zone__icon drop-zone__prompt">📄</span>
+              <span class="drop-zone__label drop-zone__prompt">Drop file here or <u>click to browse</u></span>
+              <span class="drop-zone__filename"></span>
+            </div>
             <div class="field-note mt-1">File takes precedence over pasted text when both are provided. Accepted: PDF, TXT, MD.</div>
           </div>
 
@@ -237,12 +316,13 @@
               rows="5"
               placeholder="Paste the job description here…"
             ></textarea>
-            <input
-              type="file"
-              class="form-control"
-              id="candidate-jd-file"
-              accept=".pdf,.txt,.md"
-            />
+            <div class="drop-zone" id="candidate-jd-dropzone">
+              <input type="file" id="candidate-jd-file" accept=".pdf,.txt,.md" />
+              <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
+              <span class="drop-zone__icon drop-zone__prompt">📄</span>
+              <span class="drop-zone__label drop-zone__prompt">Drop file here or <u>click to browse</u></span>
+              <span class="drop-zone__filename"></span>
+            </div>
             <div class="field-note mt-1">File takes precedence over pasted text when both are provided. Accepted: PDF, TXT, MD.</div>
           </div>
 
@@ -255,12 +335,13 @@
               rows="3"
               placeholder="Paste company context, culture notes, or strategy here…"
             ></textarea>
-            <input
-              type="file"
-              class="form-control"
-              id="candidate-context-file"
-              accept=".pdf,.txt,.md"
-            />
+            <div class="drop-zone" id="candidate-context-dropzone">
+              <input type="file" id="candidate-context-file" accept=".pdf,.txt,.md" />
+              <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
+              <span class="drop-zone__icon drop-zone__prompt">📄</span>
+              <span class="drop-zone__label drop-zone__prompt">Drop file here or <u>click to browse</u></span>
+              <span class="drop-zone__filename"></span>
+            </div>
             <div class="field-note mt-1">File takes precedence over pasted text when both are provided. Accepted: PDF, TXT, MD.</div>
           </div>
 
@@ -273,12 +354,13 @@
               rows="3"
               placeholder="Paste a custom Markdown template here…"
             ></textarea>
-            <input
-              type="file"
-              class="form-control"
-              id="candidate-template-file"
-              accept=".md,.txt"
-            />
+            <div class="drop-zone" id="candidate-template-dropzone">
+              <input type="file" id="candidate-template-file" accept=".md,.txt" />
+              <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
+              <span class="drop-zone__icon drop-zone__prompt">📄</span>
+              <span class="drop-zone__label drop-zone__prompt">Drop file here or <u>click to browse</u></span>
+              <span class="drop-zone__filename"></span>
+            </div>
             <div class="field-note mt-1">Replaces the built-in default template. File takes precedence. Accepted: MD, TXT.</div>
           </div>
 
