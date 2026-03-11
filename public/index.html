@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Interview Prep Tool</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <!-- Bootstrap 5 -->
   <link
     rel="stylesheet"
@@ -16,103 +20,201 @@
     /* Design tokens                                                        */
     /* ------------------------------------------------------------------ */
     :root {
-      --teal:        #0d9488;
-      --teal-dark:   #0f766e;
-      --teal-light:  #ccfbf1;
-      --teal-xlight: #f0fdfa;
-      --teal-mid:    #99f6e4;
-      --surface:     #ffffff;
-      --bg:          #f1f5f9;
-      --border:      #e2e8f0;
-      --text:        #1e293b;
-      --text-muted:  #64748b;
-      --green:       #16a34a;
-      --green-light: #f0fdf4;
-      --radius:      0.5rem;
-      --radius-lg:   0.75rem;
-      --shadow-sm:   0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.05);
-      --shadow-md:   0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.05);
+      --teal:          #0d9488;
+      --teal-dark:     #0f766e;
+      --teal-deeper:   #115e59;
+      --teal-light:    #ccfbf1;
+      --teal-xlight:   #f0fdfa;
+      --teal-mid:      #5eead4;
+      --surface:       #ffffff;
+      --surface-raised:#f8fafc;
+      --bg:            #f1f5f9;
+      --border:        #e2e8f0;
+      --border-subtle: #f1f5f9;
+      --text:          #0f172a;
+      --text-secondary:#334155;
+      --text-muted:    #64748b;
+      --green:         #059669;
+      --green-light:   #ecfdf5;
+      --red:           #dc2626;
+      --radius-sm:     0.375rem;
+      --radius:        0.5rem;
+      --radius-lg:     0.75rem;
+      --radius-xl:     1rem;
+      --shadow-xs:     0 1px 2px rgba(0,0,0,.06);
+      --shadow-sm:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-md:     0 4px 16px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.04);
+      --shadow-lg:     0 8px 32px rgba(0,0,0,.09), 0 2px 8px rgba(0,0,0,.05);
     }
 
     /* ------------------------------------------------------------------ */
     /* Base                                                                 */
     /* ------------------------------------------------------------------ */
+    *, *::before, *::after { box-sizing: border-box; }
+
     body {
       background-color: var(--bg);
       color: var(--text);
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* ------------------------------------------------------------------ */
     /* Header                                                               */
     /* ------------------------------------------------------------------ */
     .app-header {
-      background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 100%);
-      color: #fff;
-      padding: 2rem 0 1.75rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 8px rgba(13,148,136,.25);
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 0;
     }
-    .app-header h1 {
-      font-size: 1.6rem;
+    .app-header-inner {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      padding: 1.125rem 0;
+    }
+    .app-header-icon {
+      flex-shrink: 0;
+      width: 2.5rem;
+      height: 2.5rem;
+      background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(13,148,136,.30);
+    }
+    .app-header-icon svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .app-header-text h1 {
+      font-size: 1.0625rem;
       font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.25rem;
+      letter-spacing: -0.025em;
+      margin: 0;
+      color: var(--text);
+      line-height: 1.2;
     }
-    .app-header p {
-      opacity: 0.88;
-      margin-bottom: 0;
-      font-size: 0.95rem;
+    .app-header-text p {
+      margin: 0;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.3;
     }
 
     /* ------------------------------------------------------------------ */
-    /* Card wrapper for the form                                            */
+    /* Page layout                                                          */
     /* ------------------------------------------------------------------ */
-    .form-card {
+    .page-body {
+      padding-top: 2rem;
+      padding-bottom: 4rem;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Mode switcher (pill toggle)                                         */
+    /* ------------------------------------------------------------------ */
+    .mode-switcher {
+      display: inline-flex;
+      background: var(--border-subtle);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 3px;
+      gap: 2px;
+      margin-bottom: 1.75rem;
+    }
+    .mode-switcher .nav-link {
+      border: none;
+      border-radius: 999px;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.35rem 1.1rem;
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+      white-space: nowrap;
+    }
+    .mode-switcher .nav-link:hover:not(.active) {
+      color: var(--teal-dark);
+      background: rgba(13,148,136,.07);
+    }
+    .mode-switcher .nav-link.active {
+      background: #fff;
+      color: var(--teal-dark);
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba(0,0,0,.10), 0 1px 2px rgba(0,0,0,.06);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Main card                                                            */
+    /* ------------------------------------------------------------------ */
+    .main-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-xl);
       box-shadow: var(--shadow-md);
-      padding: 2rem;
+      padding: 2rem 2.25rem 2.25rem;
     }
 
     /* ------------------------------------------------------------------ */
-    /* Tabs                                                                 */
+    /* Field groups                                                         */
     /* ------------------------------------------------------------------ */
-    .nav-tabs {
-      border-bottom: 2px solid var(--border);
-      gap: 0.25rem;
-      margin-bottom: 0 !important; /* handled by form-card padding */
+    .field-group {
+      padding: 1.25rem 1.375rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface-raised);
+      margin-bottom: 1rem;
+      transition: border-color 0.15s;
     }
-    .nav-tabs .nav-link {
-      border: none;
-      border-bottom: 3px solid transparent;
-      border-radius: 0;
-      color: var(--text-muted);
-      font-weight: 500;
-      padding: 0.6rem 1.1rem;
-      margin-bottom: -2px;
-      transition: color 0.15s, border-color 0.15s;
+    .field-group:focus-within {
+      border-color: var(--teal-mid);
     }
-    .nav-tabs .nav-link:hover {
-      color: var(--teal);
-      border-bottom-color: var(--teal-mid);
+    .field-group-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.625rem;
     }
-    .nav-tabs .nav-link.active {
-      color: var(--teal-dark);
-      border-bottom-color: var(--teal);
-      background: transparent;
-    }
-
-    /* ------------------------------------------------------------------ */
-    /* Field labels & notes                                                 */
-    /* ------------------------------------------------------------------ */
-    .form-label {
+    .field-group-label {
+      font-size: 0.875rem;
+      font-weight: 600;
       color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+    .field-group-label .badge-required {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      background: #fef2f2;
+      color: var(--red);
+      border: 1px solid #fecaca;
+      border-radius: 999px;
+      padding: 0.05rem 0.45rem;
+      letter-spacing: 0.01em;
+    }
+    .field-group-label .badge-optional {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      background: var(--surface-raised);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.05rem 0.45rem;
+      letter-spacing: 0.01em;
     }
     .field-note {
-      font-size: 0.8rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
+      margin-top: 0.4rem;
+      line-height: 1.45;
     }
 
     /* ------------------------------------------------------------------ */
@@ -122,167 +224,19 @@
       border-color: var(--border);
       border-radius: var(--radius);
       color: var(--text);
+      font-family: inherit;
+      font-size: 0.875rem;
+      background: #fff;
       transition: border-color 0.15s, box-shadow 0.15s;
+      resize: vertical;
+    }
+    .form-control::placeholder {
+      color: #94a3b8;
     }
     .form-control:focus {
       border-color: var(--teal);
-      box-shadow: 0 0 0 3px rgba(13,148,136,.15);
-    }
-
-    /* ------------------------------------------------------------------ */
-    /* Section dividers between fields                                      */
-    /* ------------------------------------------------------------------ */
-    .mb-4 + .mb-4 {
-      padding-top: 0.5rem;
-      border-top: 1px solid var(--border);
-    }
-
-    /* ------------------------------------------------------------------ */
-    /* Generate button                                                      */
-    /* ------------------------------------------------------------------ */
-    .btn-generate {
-      background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
-      border: none;
-      border-radius: var(--radius);
-      color: #fff;
-      font-weight: 600;
-      padding: 0.55rem 1.5rem;
-      box-shadow: 0 2px 6px rgba(13,148,136,.35);
-      transition: filter 0.15s, box-shadow 0.15s, transform 0.1s;
-    }
-    .btn-generate:hover:not(:disabled) {
-      filter: brightness(1.06);
-      box-shadow: 0 4px 10px rgba(13,148,136,.4);
-      transform: translateY(-1px);
-      color: #fff;
-    }
-    .btn-generate:active:not(:disabled) {
-      transform: translateY(0);
-      filter: brightness(0.97);
-    }
-    .btn-generate:disabled {
-      opacity: 0.7;
-      color: #fff;
-    }
-    .spinner-border-sm {
-      width: 1rem;
-      height: 1rem;
-    }
-
-    /* ------------------------------------------------------------------ */
-    /* Error alert                                                          */
-    /* ------------------------------------------------------------------ */
-    #error-alert {
-      border-radius: var(--radius);
-    }
-
-    /* ------------------------------------------------------------------ */
-    /* Output panel                                                         */
-    /* ------------------------------------------------------------------ */
-    #output-panel {
-      display: none;
-    }
-    .output-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-md);
-      overflow: hidden;
-    }
-    .output-card-header {
-      background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 100%);
-      color: #fff;
-      padding: 0.85rem 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .output-card-header h2 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin: 0;
-      letter-spacing: 0.01em;
-    }
-    .btn-copy {
-      background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(255,255,255,0.4);
-      border-radius: var(--radius);
-      color: #fff;
-      font-size: 0.8rem;
-      font-weight: 500;
-      padding: 0.3rem 0.85rem;
-      transition: background 0.15s;
-    }
-    .btn-copy:hover {
-      background: rgba(255,255,255,0.3);
-      color: #fff;
-    }
-    #output-content {
-      padding: 1.75rem;
-      overflow-x: auto;
-    }
-
-    /* Rendered markdown typography */
-    #output-content h1, #output-content h2, #output-content h3,
-    #output-content h4, #output-content h5, #output-content h6 {
-      margin-top: 1.4rem;
-      margin-bottom: 0.5rem;
-      color: var(--text);
-    }
-    #output-content h2 {
-      border-bottom: 2px solid var(--teal-light);
-      padding-bottom: 0.3rem;
-    }
-    #output-content h1:first-child,
-    #output-content h2:first-child {
-      margin-top: 0;
-    }
-    #output-content ul, #output-content ol {
-      padding-left: 1.5rem;
-    }
-    #output-content table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 1rem;
-    }
-    #output-content th, #output-content td {
-      border: 1px solid var(--border);
-      padding: 0.5rem 0.75rem;
-    }
-    #output-content th {
-      background-color: var(--teal-xlight);
-      color: var(--teal-dark);
-      font-weight: 600;
-    }
-    #output-content tr:nth-child(even) td {
-      background-color: #f8fafc;
-    }
-    #output-content code {
-      background-color: #f1f5f9;
-      color: #0f4c5c;
-      padding: 0.1rem 0.35rem;
-      border-radius: 4px;
-      font-size: 0.88em;
-    }
-    #output-content pre code {
-      background: none;
-      padding: 0;
-      color: inherit;
-    }
-    #output-content pre {
-      background-color: #f1f5f9;
-      border: 1px solid var(--border);
-      padding: 1rem;
-      border-radius: var(--radius);
-      overflow-x: auto;
-    }
-    #output-content blockquote {
-      border-left: 4px solid var(--teal-mid);
-      background: var(--teal-xlight);
-      margin: 1rem 0;
-      padding: 0.6rem 1rem;
-      border-radius: 0 var(--radius) var(--radius) 0;
-      color: var(--teal-dark);
+      box-shadow: 0 0 0 3px rgba(13,148,136,.12);
+      outline: none;
     }
 
     /* ------------------------------------------------------------------ */
@@ -294,15 +248,16 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 0.35rem;
-      min-height: 72px;
-      padding: 1rem 1.25rem;
-      border: 2px dashed var(--border);
+      gap: 0.3rem;
+      min-height: 68px;
+      padding: 0.875rem 1.25rem;
+      border: 1.5px dashed var(--border);
       border-radius: var(--radius);
-      background-color: #f8fafc;
+      background-color: #fff;
       cursor: pointer;
-      transition: border-color 0.15s ease, background-color 0.15s ease;
+      transition: border-color 0.15s, background-color 0.15s;
       text-align: center;
+      margin-top: 0.5rem;
     }
     .drop-zone:hover,
     .drop-zone.drop-zone--hover {
@@ -311,6 +266,7 @@
     }
     .drop-zone.drop-zone--has-file {
       border-color: var(--green);
+      border-style: solid;
       background-color: var(--green-light);
     }
     .drop-zone input[type="file"] {
@@ -322,38 +278,67 @@
       height: 100%;
     }
     .drop-zone__icon {
-      font-size: 1.5rem;
-      line-height: 1;
-      pointer-events: none;
-    }
-    .drop-zone__label {
-      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: var(--text-muted);
       pointer-events: none;
     }
-    .drop-zone__label u {
-      color: var(--teal);
-      text-decoration-color: var(--teal);
+    .drop-zone__icon svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.75;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .drop-zone__label {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+    .drop-zone__label strong {
+      color: var(--teal-dark);
+      font-weight: 600;
     }
     .drop-zone__filename {
-      font-size: 0.8rem;
+      font-size: 0.8125rem;
       color: var(--green);
-      font-weight: 500;
+      font-weight: 600;
       pointer-events: none;
       word-break: break-all;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .drop-zone__filename::before {
+      content: '';
+      display: inline-block;
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
     }
     .drop-zone__clear {
       position: absolute;
-      top: 0.35rem;
+      top: 0.4rem;
       right: 0.5rem;
       background: none;
       border: none;
-      font-size: 1rem;
+      font-size: 0.75rem;
       line-height: 1;
       color: var(--text-muted);
       cursor: pointer;
-      padding: 0;
+      padding: 0.15rem 0.3rem;
+      border-radius: var(--radius-sm);
+      transition: background 0.1s, color 0.1s;
       display: none;
+    }
+    .drop-zone__clear:hover {
+      background: rgba(0,0,0,.06);
+      color: var(--text);
     }
     .drop-zone.drop-zone--has-file .drop-zone__clear {
       display: block;
@@ -361,246 +346,612 @@
     .drop-zone.drop-zone--has-file .drop-zone__prompt {
       display: none;
     }
+
+    /* ------------------------------------------------------------------ */
+    /* Divider between field groups                                         */
+    /* ------------------------------------------------------------------ */
+    .fields-divider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0.25rem 0 0.75rem;
+      color: var(--border);
+      font-size: 0;
+    }
+    .fields-divider::before,
+    .fields-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Generate button                                                      */
+    /* ------------------------------------------------------------------ */
+    .btn-generate {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+      border: none;
+      border-radius: var(--radius);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      padding: 0.6rem 1.75rem;
+      box-shadow: 0 1px 3px rgba(13,148,136,.35), 0 4px 12px rgba(13,148,136,.20);
+      transition: filter 0.15s, box-shadow 0.15s, transform 0.12s;
+      letter-spacing: -0.01em;
+      margin-top: 0.5rem;
+    }
+    .btn-generate:hover:not(:disabled) {
+      filter: brightness(1.07);
+      box-shadow: 0 2px 6px rgba(13,148,136,.4), 0 6px 16px rgba(13,148,136,.25);
+      transform: translateY(-1px);
+      color: #fff;
+    }
+    .btn-generate:active:not(:disabled) {
+      transform: translateY(0);
+      filter: brightness(0.97);
+      box-shadow: 0 1px 3px rgba(13,148,136,.3);
+    }
+    .btn-generate:disabled {
+      opacity: 0.65;
+      color: #fff;
+    }
+    .btn-generate svg {
+      width: 1rem;
+      height: 1rem;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.25;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .spinner-border-sm {
+      width: 0.9rem;
+      height: 0.9rem;
+      border-width: 0.15em;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Error alert                                                          */
+    /* ------------------------------------------------------------------ */
+    #error-alert {
+      border: 1px solid #fecaca;
+      border-radius: var(--radius-lg);
+      background: #fef2f2;
+      color: #991b1b;
+      font-size: 0.875rem;
+      padding: 0.75rem 1rem;
+    }
+    #error-alert .btn-close {
+      filter: none;
+      opacity: 0.5;
+    }
+    #error-alert .btn-close:hover {
+      opacity: 0.8;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Output panel                                                         */
+    /* ------------------------------------------------------------------ */
+    #output-panel {
+      display: none;
+    }
+    .output-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+    .output-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-raised);
+    }
+    .output-card-header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+    }
+    .output-card-header-left svg {
+      width: 1rem;
+      height: 1rem;
+      stroke: var(--teal-dark);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .output-card-header h2 {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      margin: 0;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .btn-copy {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      padding: 0.35rem 0.875rem;
+      box-shadow: var(--shadow-xs);
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      cursor: pointer;
+    }
+    .btn-copy svg {
+      width: 0.875rem;
+      height: 0.875rem;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .btn-copy:hover {
+      background: var(--teal-xlight);
+      border-color: var(--teal-mid);
+      color: var(--teal-dark);
+    }
+    #output-content {
+      padding: 2rem 2.25rem;
+      overflow-x: auto;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Markdown output typography                                           */
+    /* ------------------------------------------------------------------ */
+    #output-content h1, #output-content h2, #output-content h3,
+    #output-content h4, #output-content h5, #output-content h6 {
+      margin-top: 1.75rem;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    #output-content h1 { font-size: 1.4rem; font-weight: 700; }
+    #output-content h2 {
+      font-size: 1.125rem;
+      font-weight: 700;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--teal-light);
+    }
+    #output-content h3 { font-size: 1rem; font-weight: 600; }
+    #output-content h1:first-child,
+    #output-content h2:first-child {
+      margin-top: 0;
+    }
+    #output-content p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    #output-content ul, #output-content ol {
+      padding-left: 1.5rem;
+      color: var(--text-secondary);
+    }
+    #output-content li { margin-bottom: 0.2rem; }
+    #output-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.875rem;
+    }
+    #output-content th, #output-content td {
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.875rem;
+      text-align: left;
+    }
+    #output-content th {
+      background: var(--teal-xlight);
+      color: var(--teal-deeper);
+      font-weight: 600;
+      font-size: 0.8125rem;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    #output-content tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+    #output-content code {
+      background: #f1f5f9;
+      color: #0f4c5c;
+      padding: 0.15rem 0.4rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85em;
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    }
+    #output-content pre {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.125rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+    #output-content pre code {
+      background: none;
+      padding: 0;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+    #output-content blockquote {
+      border-left: 3px solid var(--teal);
+      background: var(--teal-xlight);
+      margin: 1.25rem 0;
+      padding: 0.75rem 1.125rem;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      color: var(--teal-deeper);
+      font-style: italic;
+    }
+    #output-content hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.5rem 0;
+    }
+    #output-content a {
+      color: var(--teal-dark);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Responsive tweaks                                                    */
+    /* ------------------------------------------------------------------ */
+    @media (max-width: 575px) {
+      .main-card { padding: 1.25rem 1rem 1.5rem; }
+      #output-content { padding: 1.25rem 1rem; }
+      .output-card-header { padding: 0.75rem 1rem; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- ------------------------------------------------------------------ -->
+  <!-- Header                                                               -->
+  <!-- ------------------------------------------------------------------ -->
   <header class="app-header">
     <div class="container">
-      <h1>Interview Prep Tool</h1>
-      <p>Generate a tailored interview guide in seconds.</p>
+      <div class="app-header-inner">
+        <div class="app-header-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M9 12h6M9 16h6M9 8h6M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/>
+          </svg>
+        </div>
+        <div class="app-header-text">
+          <h1>Interview Prep</h1>
+          <p>Generate a tailored interview guide in seconds</p>
+        </div>
+      </div>
     </div>
   </header>
 
-  <div class="container pb-5">
+  <!-- ------------------------------------------------------------------ -->
+  <!-- Page body                                                            -->
+  <!-- ------------------------------------------------------------------ -->
+  <div class="container page-body">
+
     <!-- Error alert -->
-    <div id="error-alert" class="alert alert-danger alert-dismissible fade show d-none mb-4" role="alert">
+    <div id="error-alert" class="alert alert-dismissible fade show d-none mb-4" role="alert">
       <span id="error-message"></span>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <div class="form-card">
-      <!-- Tab navigation -->
-      <ul class="nav nav-tabs mb-4" id="mode-tabs" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button
-          class="nav-link active"
-          id="interviewer-tab"
-          data-bs-toggle="tab"
-          data-bs-target="#interviewer-pane"
-          type="button"
-          role="tab"
-          aria-controls="interviewer-pane"
-          aria-selected="true"
-          data-mode="interviewer"
-        >Interviewer</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button
-          class="nav-link"
-          id="candidate-tab"
-          data-bs-toggle="tab"
-          data-bs-target="#candidate-pane"
-          type="button"
-          role="tab"
-          aria-controls="candidate-pane"
-          aria-selected="false"
-          data-mode="candidate"
-        >Candidate</button>
-      </li>
-    </ul>
+    <div class="main-card">
 
-    <!-- Tab panes -->
-    <div class="tab-content">
-
-      <!-- Interviewer pane -->
-      <div class="tab-pane fade show active" id="interviewer-pane" role="tabpanel" aria-labelledby="interviewer-tab">
-        <form id="interviewer-form" novalidate>
-          <!-- CV -->
-          <div class="mb-4">
-            <label class="form-label fw-semibold">Candidate CV <span class="text-danger">*</span></label>
-            <textarea
-              class="form-control mb-2"
-              id="interviewer-cv-text"
-              rows="5"
-              placeholder="Paste the candidate's CV here…"
-            ></textarea>
-            <div class="drop-zone" id="interviewer-cv-dropzone">
-              <input type="file" id="interviewer-cv-file" accept=".pdf,.txt,.md" />
-              <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
-              <span class="drop-zone__icon drop-zone__prompt">📄</span>
-              <span class="drop-zone__label drop-zone__prompt">Drop file here or <u>click to browse</u></span>
-              <span class="drop-zone__filename"></span>
-            </div>
-            <div class="field-note mt-1">File takes precedence over pasted text when both are provided. Accepted: PDF, TXT, MD.</div>
-          </div>
-
-          <!-- Job Description -->
-          <div class="mb-4">
-            <label class="form-label fw-semibold">Job Description <span class="text-danger">*</span></label>
-            <textarea
-              class="form-control mb-2"
-              id="interviewer-jd-text"
-              rows="5"
-              placeholder="Paste the job description here…"
-            ></textarea>
-            <div class="drop-zone" id="interviewer-jd-dropzone">
-              <input type="file" id="interviewer-jd-file" accept=".pdf,.txt,.md" />
-              <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
-              <span class="drop-zone__icon drop-zone__prompt">📄</span>
-              <span class="drop-zone__label drop-zone__prompt">Drop file here or <u>click to browse</u></span>
-              <span class="drop-zone__filename"></span>
-            </div>
-            <div class="field-note mt-1">File takes precedence over pasted text when both are provided. Accepted: PDF, TXT, MD.</div>
-          </div>
-
-          <!-- Company Context -->
-          <div class="mb-4">
-            <label class="form-label fw-semibold">Company Context <span class="text-muted fw-normal">(optional)</span></label>
-            <textarea
-              class="form-control mb-2"
-              id="interviewer-context-text"
-              rows="3"
-              placeholder="Paste company context, culture notes, or strategy here…"
-            ></textarea>
-            <div class="drop-zone" id="interviewer-context-dropzone">
-              <input type="file" id="interviewer-context-file" accept=".pdf,.txt,.md" />
-              <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
-              <span class="drop-zone__icon drop-zone__prompt">📄</span>
-              <span class="drop-zone__label drop-zone__prompt">Drop file here or <u>click to browse</u></span>
-              <span class="drop-zone__filename"></span>
-            </div>
-            <div class="field-note mt-1">File takes precedence over pasted text when both are provided. Accepted: PDF, TXT, MD.</div>
-          </div>
-
-          <!-- Interview Template -->
-          <div class="mb-4">
-            <label class="form-label fw-semibold">Interview Template <span class="text-muted fw-normal">(optional)</span></label>
-            <textarea
-              class="form-control mb-2"
-              id="interviewer-template-text"
-              rows="3"
-              placeholder="Paste a custom Markdown template here…"
-            ></textarea>
-            <div class="drop-zone" id="interviewer-template-dropzone">
-              <input type="file" id="interviewer-template-file" accept=".md,.txt" />
-              <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
-              <span class="drop-zone__icon drop-zone__prompt">📄</span>
-              <span class="drop-zone__label drop-zone__prompt">Drop file here or <u>click to browse</u></span>
-              <span class="drop-zone__filename"></span>
-            </div>
-            <div class="field-note mt-1">Replaces the built-in default template. File takes precedence. Accepted: MD, TXT.</div>
-          </div>
-
+      <!-- Mode switcher -->
+      <ul class="nav mode-switcher" id="mode-tabs" role="tablist">
+        <li class="nav-item" role="presentation">
           <button
-            type="submit"
-            class="btn btn-generate"
-            id="interviewer-generate-btn"
-          >
-            <span class="spinner-border spinner-border-sm me-2 d-none" id="interviewer-spinner" role="status" aria-hidden="true"></span>
-            Generate
-          </button>
-        </form>
-      </div><!-- /interviewer-pane -->
-
-      <!-- Candidate pane -->
-      <div class="tab-pane fade" id="candidate-pane" role="tabpanel" aria-labelledby="candidate-tab">
-        <form id="candidate-form" novalidate>
-          <!-- CV -->
-          <div class="mb-4">
-            <label class="form-label fw-semibold">Your CV <span class="text-danger">*</span></label>
-            <textarea
-              class="form-control mb-2"
-              id="candidate-cv-text"
-              rows="5"
-              placeholder="Paste your CV here…"
-            ></textarea>
-            <div class="drop-zone" id="candidate-cv-dropzone">
-              <input type="file" id="candidate-cv-file" accept=".pdf,.txt,.md" />
-              <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
-              <span class="drop-zone__icon drop-zone__prompt">📄</span>
-              <span class="drop-zone__label drop-zone__prompt">Drop file here or <u>click to browse</u></span>
-              <span class="drop-zone__filename"></span>
-            </div>
-            <div class="field-note mt-1">File takes precedence over pasted text when both are provided. Accepted: PDF, TXT, MD.</div>
-          </div>
-
-          <!-- Job Description -->
-          <div class="mb-4">
-            <label class="form-label fw-semibold">Job Description <span class="text-danger">*</span></label>
-            <textarea
-              class="form-control mb-2"
-              id="candidate-jd-text"
-              rows="5"
-              placeholder="Paste the job description here…"
-            ></textarea>
-            <div class="drop-zone" id="candidate-jd-dropzone">
-              <input type="file" id="candidate-jd-file" accept=".pdf,.txt,.md" />
-              <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
-              <span class="drop-zone__icon drop-zone__prompt">📄</span>
-              <span class="drop-zone__label drop-zone__prompt">Drop file here or <u>click to browse</u></span>
-              <span class="drop-zone__filename"></span>
-            </div>
-            <div class="field-note mt-1">File takes precedence over pasted text when both are provided. Accepted: PDF, TXT, MD.</div>
-          </div>
-
-          <!-- Company Context -->
-          <div class="mb-4">
-            <label class="form-label fw-semibold">Company Context <span class="text-muted fw-normal">(optional)</span></label>
-            <textarea
-              class="form-control mb-2"
-              id="candidate-context-text"
-              rows="3"
-              placeholder="Paste company context, culture notes, or strategy here…"
-            ></textarea>
-            <div class="drop-zone" id="candidate-context-dropzone">
-              <input type="file" id="candidate-context-file" accept=".pdf,.txt,.md" />
-              <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
-              <span class="drop-zone__icon drop-zone__prompt">📄</span>
-              <span class="drop-zone__label drop-zone__prompt">Drop file here or <u>click to browse</u></span>
-              <span class="drop-zone__filename"></span>
-            </div>
-            <div class="field-note mt-1">File takes precedence over pasted text when both are provided. Accepted: PDF, TXT, MD.</div>
-          </div>
-
-          <!-- Interview Template -->
-          <div class="mb-4">
-            <label class="form-label fw-semibold">Interview Template <span class="text-muted fw-normal">(optional)</span></label>
-            <textarea
-              class="form-control mb-2"
-              id="candidate-template-text"
-              rows="3"
-              placeholder="Paste a custom Markdown template here…"
-            ></textarea>
-            <div class="drop-zone" id="candidate-template-dropzone">
-              <input type="file" id="candidate-template-file" accept=".md,.txt" />
-              <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
-              <span class="drop-zone__icon drop-zone__prompt">📄</span>
-              <span class="drop-zone__label drop-zone__prompt">Drop file here or <u>click to browse</u></span>
-              <span class="drop-zone__filename"></span>
-            </div>
-            <div class="field-note mt-1">Replaces the built-in default template. File takes precedence. Accepted: MD, TXT.</div>
-          </div>
-
+            class="nav-link active"
+            id="interviewer-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#interviewer-pane"
+            type="button"
+            role="tab"
+            aria-controls="interviewer-pane"
+            aria-selected="true"
+            data-mode="interviewer"
+          >Interviewer</button>
+        </li>
+        <li class="nav-item" role="presentation">
           <button
-            type="submit"
-            class="btn btn-generate"
-            id="candidate-generate-btn"
-          >
-            <span class="spinner-border spinner-border-sm me-2 d-none" id="candidate-spinner" role="status" aria-hidden="true"></span>
-            Generate
-          </button>
-        </form>
-      </div><!-- /candidate-pane -->
+            class="nav-link"
+            id="candidate-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#candidate-pane"
+            type="button"
+            role="tab"
+            aria-controls="candidate-pane"
+            aria-selected="false"
+            data-mode="candidate"
+          >Candidate</button>
+        </li>
+      </ul>
 
-    </div><!-- /tab-content -->
-    </div><!-- /form-card -->
+      <!-- Tab panes -->
+      <div class="tab-content">
 
-    <!-- Output panel -->
+        <!-- ============================================================ -->
+        <!-- Interviewer pane                                              -->
+        <!-- ============================================================ -->
+        <div class="tab-pane fade show active" id="interviewer-pane" role="tabpanel" aria-labelledby="interviewer-tab">
+          <form id="interviewer-form" novalidate>
+
+            <!-- Candidate CV -->
+            <div class="field-group">
+              <div class="field-group-header">
+                <span class="field-group-label">
+                  Candidate CV
+                  <span class="badge-required">Required</span>
+                </span>
+              </div>
+              <textarea
+                class="form-control mb-0"
+                id="interviewer-cv-text"
+                rows="4"
+                placeholder="Paste the candidate's CV here…"
+              ></textarea>
+              <div class="drop-zone" id="interviewer-cv-dropzone">
+                <input type="file" id="interviewer-cv-file" accept=".pdf,.txt,.md" />
+                <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
+                <span class="drop-zone__icon drop-zone__prompt">
+                  <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </span>
+                <span class="drop-zone__label drop-zone__prompt">Drop file here or <strong>click to browse</strong></span>
+                <span class="drop-zone__filename"></span>
+              </div>
+              <p class="field-note">File takes precedence over pasted text. Accepted: PDF, TXT, MD.</p>
+            </div>
+
+            <!-- Job Description -->
+            <div class="field-group">
+              <div class="field-group-header">
+                <span class="field-group-label">
+                  Job Description
+                  <span class="badge-required">Required</span>
+                </span>
+              </div>
+              <textarea
+                class="form-control mb-0"
+                id="interviewer-jd-text"
+                rows="4"
+                placeholder="Paste the job description here…"
+              ></textarea>
+              <div class="drop-zone" id="interviewer-jd-dropzone">
+                <input type="file" id="interviewer-jd-file" accept=".pdf,.txt,.md" />
+                <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
+                <span class="drop-zone__icon drop-zone__prompt">
+                  <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </span>
+                <span class="drop-zone__label drop-zone__prompt">Drop file here or <strong>click to browse</strong></span>
+                <span class="drop-zone__filename"></span>
+              </div>
+              <p class="field-note">File takes precedence over pasted text. Accepted: PDF, TXT, MD.</p>
+            </div>
+
+            <!-- Company Context -->
+            <div class="field-group">
+              <div class="field-group-header">
+                <span class="field-group-label">
+                  Company Context
+                  <span class="badge-optional">Optional</span>
+                </span>
+              </div>
+              <textarea
+                class="form-control mb-0"
+                id="interviewer-context-text"
+                rows="3"
+                placeholder="Company culture, strategy, team notes…"
+              ></textarea>
+              <div class="drop-zone" id="interviewer-context-dropzone">
+                <input type="file" id="interviewer-context-file" accept=".pdf,.txt,.md" />
+                <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
+                <span class="drop-zone__icon drop-zone__prompt">
+                  <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </span>
+                <span class="drop-zone__label drop-zone__prompt">Drop file here or <strong>click to browse</strong></span>
+                <span class="drop-zone__filename"></span>
+              </div>
+              <p class="field-note">File takes precedence over pasted text. Accepted: PDF, TXT, MD.</p>
+            </div>
+
+            <!-- Interview Template -->
+            <div class="field-group">
+              <div class="field-group-header">
+                <span class="field-group-label">
+                  Interview Template
+                  <span class="badge-optional">Optional</span>
+                </span>
+              </div>
+              <textarea
+                class="form-control mb-0"
+                id="interviewer-template-text"
+                rows="3"
+                placeholder="Paste a custom Markdown template…"
+              ></textarea>
+              <div class="drop-zone" id="interviewer-template-dropzone">
+                <input type="file" id="interviewer-template-file" accept=".md,.txt" />
+                <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
+                <span class="drop-zone__icon drop-zone__prompt">
+                  <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </span>
+                <span class="drop-zone__label drop-zone__prompt">Drop file here or <strong>click to browse</strong></span>
+                <span class="drop-zone__filename"></span>
+              </div>
+              <p class="field-note">Replaces the built-in default template. File takes precedence. Accepted: MD, TXT.</p>
+            </div>
+
+            <button type="submit" class="btn btn-generate" id="interviewer-generate-btn">
+              <span class="spinner-border spinner-border-sm d-none" id="interviewer-spinner" role="status" aria-hidden="true"></span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Generate
+            </button>
+
+          </form>
+        </div><!-- /interviewer-pane -->
+
+        <!-- ============================================================ -->
+        <!-- Candidate pane                                                -->
+        <!-- ============================================================ -->
+        <div class="tab-pane fade" id="candidate-pane" role="tabpanel" aria-labelledby="candidate-tab">
+          <form id="candidate-form" novalidate>
+
+            <!-- Your CV -->
+            <div class="field-group">
+              <div class="field-group-header">
+                <span class="field-group-label">
+                  Your CV
+                  <span class="badge-required">Required</span>
+                </span>
+              </div>
+              <textarea
+                class="form-control mb-0"
+                id="candidate-cv-text"
+                rows="4"
+                placeholder="Paste your CV here…"
+              ></textarea>
+              <div class="drop-zone" id="candidate-cv-dropzone">
+                <input type="file" id="candidate-cv-file" accept=".pdf,.txt,.md" />
+                <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
+                <span class="drop-zone__icon drop-zone__prompt">
+                  <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </span>
+                <span class="drop-zone__label drop-zone__prompt">Drop file here or <strong>click to browse</strong></span>
+                <span class="drop-zone__filename"></span>
+              </div>
+              <p class="field-note">File takes precedence over pasted text. Accepted: PDF, TXT, MD.</p>
+            </div>
+
+            <!-- Job Description -->
+            <div class="field-group">
+              <div class="field-group-header">
+                <span class="field-group-label">
+                  Job Description
+                  <span class="badge-required">Required</span>
+                </span>
+              </div>
+              <textarea
+                class="form-control mb-0"
+                id="candidate-jd-text"
+                rows="4"
+                placeholder="Paste the job description here…"
+              ></textarea>
+              <div class="drop-zone" id="candidate-jd-dropzone">
+                <input type="file" id="candidate-jd-file" accept=".pdf,.txt,.md" />
+                <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
+                <span class="drop-zone__icon drop-zone__prompt">
+                  <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </span>
+                <span class="drop-zone__label drop-zone__prompt">Drop file here or <strong>click to browse</strong></span>
+                <span class="drop-zone__filename"></span>
+              </div>
+              <p class="field-note">File takes precedence over pasted text. Accepted: PDF, TXT, MD.</p>
+            </div>
+
+            <!-- Company Context -->
+            <div class="field-group">
+              <div class="field-group-header">
+                <span class="field-group-label">
+                  Company Context
+                  <span class="badge-optional">Optional</span>
+                </span>
+              </div>
+              <textarea
+                class="form-control mb-0"
+                id="candidate-context-text"
+                rows="3"
+                placeholder="Company culture, strategy, team notes…"
+              ></textarea>
+              <div class="drop-zone" id="candidate-context-dropzone">
+                <input type="file" id="candidate-context-file" accept=".pdf,.txt,.md" />
+                <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
+                <span class="drop-zone__icon drop-zone__prompt">
+                  <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </span>
+                <span class="drop-zone__label drop-zone__prompt">Drop file here or <strong>click to browse</strong></span>
+                <span class="drop-zone__filename"></span>
+              </div>
+              <p class="field-note">File takes precedence over pasted text. Accepted: PDF, TXT, MD.</p>
+            </div>
+
+            <!-- Interview Template -->
+            <div class="field-group">
+              <div class="field-group-header">
+                <span class="field-group-label">
+                  Interview Template
+                  <span class="badge-optional">Optional</span>
+                </span>
+              </div>
+              <textarea
+                class="form-control mb-0"
+                id="candidate-template-text"
+                rows="3"
+                placeholder="Paste a custom Markdown template…"
+              ></textarea>
+              <div class="drop-zone" id="candidate-template-dropzone">
+                <input type="file" id="candidate-template-file" accept=".md,.txt" />
+                <button type="button" class="drop-zone__clear" aria-label="Clear file">✕</button>
+                <span class="drop-zone__icon drop-zone__prompt">
+                  <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </span>
+                <span class="drop-zone__label drop-zone__prompt">Drop file here or <strong>click to browse</strong></span>
+                <span class="drop-zone__filename"></span>
+              </div>
+              <p class="field-note">Replaces the built-in default template. File takes precedence. Accepted: MD, TXT.</p>
+            </div>
+
+            <button type="submit" class="btn btn-generate" id="candidate-generate-btn">
+              <span class="spinner-border spinner-border-sm d-none" id="candidate-spinner" role="status" aria-hidden="true"></span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Generate
+            </button>
+
+          </form>
+        </div><!-- /candidate-pane -->
+
+      </div><!-- /tab-content -->
+    </div><!-- /main-card -->
+
+    <!-- ---------------------------------------------------------------- -->
+    <!-- Output panel                                                       -->
+    <!-- ---------------------------------------------------------------- -->
     <div id="output-panel" class="mt-4">
       <div class="output-card">
         <div class="output-card-header">
-          <h2>Generated Output</h2>
-          <button type="button" class="btn-copy" id="copy-btn">Copy Markdown</button>
+          <div class="output-card-header-left">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            <h2>Generated Output</h2>
+          </div>
+          <button type="button" class="btn-copy" id="copy-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            Copy Markdown
+          </button>
         </div>
         <div id="output-content" role="region" aria-label="Generated output"></div>
       </div>
@@ -620,7 +971,7 @@
     integrity="sha384-NNQgBjjuhtXzPmmy4gurS5X7P4uTt1DThyevz4Ua0IVK5+kazYQI1W27JHjbbxQz"
     crossorigin="anonymous"
   ></script>
-  <!-- DOMPurify — sanitises marked.js output before innerHTML assignment -->
+  <!-- DOMPurify -->
   <script
     src="https://cdn.jsdelivr.net/npm/dompurify@3.2.4/dist/purify.min.js"
     integrity="sha384-eEu5CTj3qGvu9PdJuS+YlkNi7d2XxQROAFYOr59zgObtlcux1ae1Il3u7jvdCSWu"
