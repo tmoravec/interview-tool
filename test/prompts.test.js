@@ -152,6 +152,41 @@ describe('getPrompt — custom template', () => {
   });
 });
 
+describe('getPrompt — file-object template (Base64 encoded)', () => {
+  it('decodes a Base64 file-object template and uses it as the active template', () => {
+    const templateText = '## File-Upload Template\n### Section A\n- Question X';
+    const base64Data = Buffer.from(templateText, 'utf8').toString('base64');
+    const fileTemplate = { mimeType: 'text/markdown', data: base64Data };
+
+    const result = getPrompt('interviewer', {
+      cv: 'CV text',
+      jobDescription: 'JD text',
+      template: fileTemplate,
+    });
+
+    assert.ok(
+      result.systemPrompt.includes(templateText),
+      'system prompt should contain the decoded file template content'
+    );
+  });
+
+  it('does not forward the file-object template as an image_url part in userMessageParts', () => {
+    const templateText = '## Another Template\n### Section B';
+    const base64Data = Buffer.from(templateText, 'utf8').toString('base64');
+    const fileTemplate = { mimeType: 'text/markdown', data: base64Data };
+
+    const result = getPrompt('candidate', {
+      cv: 'CV text',
+      jobDescription: 'JD text',
+      template: fileTemplate,
+    });
+
+    // userMessageParts should only contain CV/JD parts, not the template
+    const combined = result.userMessageParts.map(p => p.text || p?.image_url?.url || '').join(' ');
+    assert.ok(!combined.includes(templateText), 'userMessageParts should not contain template text');
+  });
+});
+
 describe('getPrompt — validation errors', () => {
   it('throws ValidationError when cv is missing', () => {
     assert.throws(

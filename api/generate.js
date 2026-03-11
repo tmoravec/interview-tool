@@ -47,10 +47,13 @@ export default async function handler(req, res) {
     return jsonResponse(res, 405, { error: 'Method not allowed. Use POST.' });
   }
 
-  // Auth check
+  // Auth check — use explicit null/undefined check so an empty APP_PASSWORD
+  // string is NOT treated as "auth disabled" (which would be a misconfiguration trap).
   const providedPassword = req.headers['x-app-password'];
-  if (APP_PASSWORD && providedPassword !== APP_PASSWORD) {
-    return jsonResponse(res, 401, { error: 'Invalid password.' });
+  if (APP_PASSWORD != null) {
+    if (providedPassword !== APP_PASSWORD) {
+      return jsonResponse(res, 401, { error: 'Invalid password.' });
+    }
   }
 
   // Parse body

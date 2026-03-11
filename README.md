@@ -46,7 +46,7 @@ Copy the provided template and fill in your values:
 cp .env.local.example .env.local   # or edit .env.local directly
 ```
 
-`.env.local` (already present in the repo — **never committed**):
+`.env.local` (gitignored — **never committed**):
 
 ```
 OPENROUTER_API_KEY=your-openrouter-api-key-here

@@ -36,7 +36,7 @@ function loadEnvFile(envPath) {
     const eqIndex = trimmed.indexOf('=');
     if (eqIndex === -1) continue;
     const key = trimmed.slice(0, eqIndex).trim();
-    const value = trimmed.slice(eqIndex + 1).trim();
+    const value = trimmed.slice(eqIndex + 1).trim().replace(/^["']|["']$/g, '');
     // Don't overwrite values already set in the environment
     if (!(key in process.env)) {
       process.env[key] = value;

@@ -114,7 +114,7 @@ function showOutput(markdown) {
   rawMarkdown = markdown;
   const panel = el('output-panel');
   const content = el('output-content');
-  content.innerHTML = marked.parse(markdown);
+  content.innerHTML = DOMPurify.sanitize(marked.parse(markdown));
   panel.style.display = 'block';
   panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
