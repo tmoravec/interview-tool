@@ -96,9 +96,10 @@ describe('getPrompt — file inputs (Base64 objects)', () => {
     });
     const fileParts = result.userMessageParts.filter(p => p.type === 'file');
     assert.ok(fileParts.length > 0, 'should have at least one file part for PDF input');
-    const url = fileParts[0].file.url;
-    assert.ok(url.startsWith('data:application/pdf;base64,'), 'URL should be a data URI with correct mime type');
-    assert.ok(url.includes('AAABBBCCC'), 'URL should include the base64 data');
+    const filePart = fileParts[0].file;
+    assert.ok(typeof filePart.filename === 'string' && filePart.filename.length > 0, 'file part should have a filename');
+    assert.ok(filePart.file_data.startsWith('data:application/pdf;base64,'), 'file_data should be a data URI with correct mime type');
+    assert.ok(filePart.file_data.includes('AAABBBCCC'), 'file_data should include the base64 data');
   });
 
   it('decodes a text/plain file-based job description into a text part', () => {
