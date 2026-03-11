@@ -12,28 +12,226 @@
     crossorigin="anonymous"
   />
   <style>
+    /* ------------------------------------------------------------------ */
+    /* Design tokens                                                        */
+    /* ------------------------------------------------------------------ */
+    :root {
+      --teal:        #0d9488;
+      --teal-dark:   #0f766e;
+      --teal-light:  #ccfbf1;
+      --teal-xlight: #f0fdfa;
+      --teal-mid:    #99f6e4;
+      --surface:     #ffffff;
+      --bg:          #f1f5f9;
+      --border:      #e2e8f0;
+      --text:        #1e293b;
+      --text-muted:  #64748b;
+      --green:       #16a34a;
+      --green-light: #f0fdf4;
+      --radius:      0.5rem;
+      --radius-lg:   0.75rem;
+      --shadow-sm:   0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.05);
+      --shadow-md:   0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.05);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Base                                                                 */
+    /* ------------------------------------------------------------------ */
     body {
-      background-color: #f8f9fa;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Header                                                               */
+    /* ------------------------------------------------------------------ */
+    .app-header {
+      background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 100%);
+      color: #fff;
+      padding: 2rem 0 1.75rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 8px rgba(13,148,136,.25);
+    }
+    .app-header h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
+    }
+    .app-header p {
+      opacity: 0.88;
+      margin-bottom: 0;
+      font-size: 0.95rem;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Card wrapper for the form                                            */
+    /* ------------------------------------------------------------------ */
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 2rem;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Tabs                                                                 */
+    /* ------------------------------------------------------------------ */
+    .nav-tabs {
+      border-bottom: 2px solid var(--border);
+      gap: 0.25rem;
+      margin-bottom: 0 !important; /* handled by form-card padding */
+    }
+    .nav-tabs .nav-link {
+      border: none;
+      border-bottom: 3px solid transparent;
+      border-radius: 0;
+      color: var(--text-muted);
+      font-weight: 500;
+      padding: 0.6rem 1.1rem;
+      margin-bottom: -2px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .nav-tabs .nav-link:hover {
+      color: var(--teal);
+      border-bottom-color: var(--teal-mid);
+    }
+    .nav-tabs .nav-link.active {
+      color: var(--teal-dark);
+      border-bottom-color: var(--teal);
+      background: transparent;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Field labels & notes                                                 */
+    /* ------------------------------------------------------------------ */
+    .form-label {
+      color: var(--text);
     }
     .field-note {
       font-size: 0.8rem;
-      color: #6c757d;
+      color: var(--text-muted);
     }
+
+    /* ------------------------------------------------------------------ */
+    /* Textarea                                                             */
+    /* ------------------------------------------------------------------ */
+    .form-control {
+      border-color: var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .form-control:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(13,148,136,.15);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Section dividers between fields                                      */
+    /* ------------------------------------------------------------------ */
+    .mb-4 + .mb-4 {
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Generate button                                                      */
+    /* ------------------------------------------------------------------ */
+    .btn-generate {
+      background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+      border: none;
+      border-radius: var(--radius);
+      color: #fff;
+      font-weight: 600;
+      padding: 0.55rem 1.5rem;
+      box-shadow: 0 2px 6px rgba(13,148,136,.35);
+      transition: filter 0.15s, box-shadow 0.15s, transform 0.1s;
+    }
+    .btn-generate:hover:not(:disabled) {
+      filter: brightness(1.06);
+      box-shadow: 0 4px 10px rgba(13,148,136,.4);
+      transform: translateY(-1px);
+      color: #fff;
+    }
+    .btn-generate:active:not(:disabled) {
+      transform: translateY(0);
+      filter: brightness(0.97);
+    }
+    .btn-generate:disabled {
+      opacity: 0.7;
+      color: #fff;
+    }
+    .spinner-border-sm {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Error alert                                                          */
+    /* ------------------------------------------------------------------ */
+    #error-alert {
+      border-radius: var(--radius);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* Output panel                                                         */
+    /* ------------------------------------------------------------------ */
     #output-panel {
       display: none;
     }
+    .output-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+    .output-card-header {
+      background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 100%);
+      color: #fff;
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .output-card-header h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0;
+      letter-spacing: 0.01em;
+    }
+    .btn-copy {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: var(--radius);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 0.3rem 0.85rem;
+      transition: background 0.15s;
+    }
+    .btn-copy:hover {
+      background: rgba(255,255,255,0.3);
+      color: #fff;
+    }
     #output-content {
-      background: #fff;
-      border: 1px solid #dee2e6;
-      border-radius: 0.375rem;
-      padding: 1.5rem;
+      padding: 1.75rem;
       overflow-x: auto;
     }
+
     /* Rendered markdown typography */
     #output-content h1, #output-content h2, #output-content h3,
     #output-content h4, #output-content h5, #output-content h6 {
-      margin-top: 1.25rem;
+      margin-top: 1.4rem;
       margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+    #output-content h2 {
+      border-bottom: 2px solid var(--teal-light);
+      padding-bottom: 0.3rem;
     }
     #output-content h1:first-child,
     #output-content h2:first-child {
@@ -48,30 +246,43 @@
       margin-bottom: 1rem;
     }
     #output-content th, #output-content td {
-      border: 1px solid #dee2e6;
+      border: 1px solid var(--border);
       padding: 0.5rem 0.75rem;
     }
     #output-content th {
-      background-color: #f8f9fa;
+      background-color: var(--teal-xlight);
+      color: var(--teal-dark);
+      font-weight: 600;
+    }
+    #output-content tr:nth-child(even) td {
+      background-color: #f8fafc;
     }
     #output-content code {
-      background-color: #f0f0f0;
-      padding: 0.1rem 0.3rem;
-      border-radius: 3px;
+      background-color: #f1f5f9;
+      color: #0f4c5c;
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+      font-size: 0.88em;
     }
     #output-content pre code {
       background: none;
       padding: 0;
+      color: inherit;
     }
     #output-content pre {
-      background-color: #f0f0f0;
+      background-color: #f1f5f9;
+      border: 1px solid var(--border);
       padding: 1rem;
-      border-radius: 0.375rem;
+      border-radius: var(--radius);
       overflow-x: auto;
     }
-    .spinner-border-sm {
-      width: 1rem;
-      height: 1rem;
+    #output-content blockquote {
+      border-left: 4px solid var(--teal-mid);
+      background: var(--teal-xlight);
+      margin: 1rem 0;
+      padding: 0.6rem 1rem;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      color: var(--teal-dark);
     }
 
     /* ------------------------------------------------------------------ */
@@ -86,24 +297,23 @@
       gap: 0.35rem;
       min-height: 72px;
       padding: 1rem 1.25rem;
-      border: 2px dashed #ced4da;
-      border-radius: 0.375rem;
-      background-color: #fff;
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      background-color: #f8fafc;
       cursor: pointer;
       transition: border-color 0.15s ease, background-color 0.15s ease;
       text-align: center;
     }
     .drop-zone:hover,
     .drop-zone.drop-zone--hover {
-      border-color: #0d6efd;
-      background-color: #f0f6ff;
+      border-color: var(--teal);
+      background-color: var(--teal-xlight);
     }
     .drop-zone.drop-zone--has-file {
-      border-color: #198754;
-      background-color: #f0fff4;
+      border-color: var(--green);
+      background-color: var(--green-light);
     }
     .drop-zone input[type="file"] {
-      /* Hidden but still reachable by label / programmatic click */
       position: absolute;
       inset: 0;
       opacity: 0;
@@ -118,12 +328,16 @@
     }
     .drop-zone__label {
       font-size: 0.85rem;
-      color: #495057;
+      color: var(--text-muted);
       pointer-events: none;
+    }
+    .drop-zone__label u {
+      color: var(--teal);
+      text-decoration-color: var(--teal);
     }
     .drop-zone__filename {
       font-size: 0.8rem;
-      color: #198754;
+      color: var(--green);
       font-weight: 500;
       pointer-events: none;
       word-break: break-all;
@@ -136,7 +350,7 @@
       border: none;
       font-size: 1rem;
       line-height: 1;
-      color: #6c757d;
+      color: var(--text-muted);
       cursor: pointer;
       padding: 0;
       display: none;
@@ -150,20 +364,23 @@
   </style>
 </head>
 <body>
-  <div class="container py-4">
-    <header class="mb-4">
-      <h1 class="h3 fw-bold">Interview Prep Tool</h1>
-      <p class="text-muted mb-0">Generate a tailored interview guide in seconds.</p>
-    </header>
+  <header class="app-header">
+    <div class="container">
+      <h1>Interview Prep Tool</h1>
+      <p>Generate a tailored interview guide in seconds.</p>
+    </div>
+  </header>
 
+  <div class="container pb-5">
     <!-- Error alert -->
-    <div id="error-alert" class="alert alert-danger alert-dismissible fade show d-none" role="alert">
+    <div id="error-alert" class="alert alert-danger alert-dismissible fade show d-none mb-4" role="alert">
       <span id="error-message"></span>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <!-- Tab navigation -->
-    <ul class="nav nav-tabs mb-4" id="mode-tabs" role="tablist">
+    <div class="form-card">
+      <!-- Tab navigation -->
+      <ul class="nav nav-tabs mb-4" id="mode-tabs" role="tablist">
       <li class="nav-item" role="presentation">
         <button
           class="nav-link active"
@@ -276,7 +493,7 @@
 
           <button
             type="submit"
-            class="btn btn-primary"
+            class="btn btn-generate"
             id="interviewer-generate-btn"
           >
             <span class="spinner-border spinner-border-sm me-2 d-none" id="interviewer-spinner" role="status" aria-hidden="true"></span>
@@ -366,7 +583,7 @@
 
           <button
             type="submit"
-            class="btn btn-primary"
+            class="btn btn-generate"
             id="candidate-generate-btn"
           >
             <span class="spinner-border spinner-border-sm me-2 d-none" id="candidate-spinner" role="status" aria-hidden="true"></span>
@@ -376,16 +593,17 @@
       </div><!-- /candidate-pane -->
 
     </div><!-- /tab-content -->
+    </div><!-- /form-card -->
 
     <!-- Output panel -->
-    <div id="output-panel" class="mt-5">
-      <div class="d-flex align-items-center justify-content-between mb-3">
-        <h2 class="h5 mb-0 fw-semibold">Generated Output</h2>
-        <button type="button" class="btn btn-outline-secondary btn-sm" id="copy-btn">
-          Copy Markdown
-        </button>
+    <div id="output-panel" class="mt-4">
+      <div class="output-card">
+        <div class="output-card-header">
+          <h2>Generated Output</h2>
+          <button type="button" class="btn-copy" id="copy-btn">Copy Markdown</button>
+        </div>
+        <div id="output-content" role="region" aria-label="Generated output"></div>
       </div>
-      <div id="output-content" role="region" aria-label="Generated output"></div>
     </div>
 
   </div><!-- /container -->
