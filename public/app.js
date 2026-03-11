@@ -110,11 +110,43 @@ function clearError() {
 
 let rawMarkdown = '';
 
+// DOMPurify config: allow all standard HTML elements produced by marked.js
+// (headings, tables, lists, code blocks, links, etc.) while still blocking
+// dangerous tags and attributes (script, iframe, on* handlers, …).
+const DOMPURIFY_CONFIG = {
+  ALLOWED_TAGS: [
+    // Headings & block elements
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'p', 'blockquote', 'pre', 'hr', 'br', 'div',
+    // Inline formatting
+    'strong', 'b', 'em', 'i', 'u', 's', 'del', 'ins',
+    'code', 'kbd', 'samp', 'var', 'mark', 'small', 'sub', 'sup',
+    // Lists
+    'ul', 'ol', 'li',
+    // Tables
+    'table', 'thead', 'tbody', 'tfoot', 'tr', 'th', 'td', 'caption', 'colgroup', 'col',
+    // Links & media
+    'a', 'img',
+    // Misc
+    'span', 'details', 'summary',
+  ],
+  ALLOWED_ATTR: [
+    'href', 'title', 'target', 'rel',   // <a>
+    'src', 'alt', 'width', 'height',    // <img>
+    'align', 'valign',                  // table alignment (some renderers emit these)
+    'id', 'class',                      // preserve ids/classes for styling
+    'colspan', 'rowspan',               // table cell spanning
+    'start', 'type',                    // <ol>/<ul>
+  ],
+  // Force all links to open in a new tab safely
+  FORCE_BODY: true,
+};
+
 function showOutput(markdown) {
   rawMarkdown = markdown;
   const panel = el('output-panel');
   const content = el('output-content');
-  content.innerHTML = DOMPurify.sanitize(marked.parse(markdown));
+  content.innerHTML = DOMPurify.sanitize(marked.parse(markdown), DOMPURIFY_CONFIG);
   panel.style.display = 'block';
   panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
